@@ -73,6 +73,7 @@ class Alpha2GoClient:
         """Handle a BLE notification from the pump."""
         self._notification_count += 1
         log_ble_packet(self._address, data, self._notification_count)
+        record_ble_packet(self._address, data, self._notification_count)
 
     @property
     def is_connected(self) -> bool:
