@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 from datetime import timedelta
-
+from homeassistant.components.bluetooth import async_ble_device_from_address
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
@@ -23,7 +23,17 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Grundfos Alpha2 Go from a config entry."""
 
     address: str = entry.data[CONF_ADDRESS]
-    client = Alpha2GoClient(address)
+    ble_device = async_ble_device_from_address(
+    hass,
+    address,
+    connectable=True,
+)
+if ble_device is None:
+    raise ConfigEntryNotReady(
+        f"Bluetooth device {address} not found. "
+        "Make sure the pump is advertising and Bluetooth is available."
+    )
+client = Alpha2GoClient(address, ble_device)
 
     coordinator = Alpha2GoCoordinator(hass, client, entry.title)
 
