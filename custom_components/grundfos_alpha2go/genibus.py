@@ -48,7 +48,6 @@ class Alpha2GoClient:
     async def connect(self) -> None:
         """Connect to the pump and subscribe to proprietary notifications."""
         _LOGGER.debug("Connecting to ALPHA2 GO at %s", self._address)
-
         self._client = await establish_connection(
             BleakClient,
             self._ble_device,
@@ -56,8 +55,8 @@ class Alpha2GoClient:
             disconnected_callback=self._on_disconnect,
             timeout=20.0,
         )
-
         _LOGGER.info("Connected to ALPHA2 GO %s", self._address)
+
         try:
             await self._client.start_notify(GRUNDFOS_CHAR_UUID, self._on_notify)
             _LOGGER.debug("Notifications enabled on Grundfos characteristic")
