@@ -70,8 +70,7 @@ async def async_setup_entry(
 ) -> None:
     coordinator: Alpha2GoCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        Alpha2GoSensorEntity(coordinator, entry, desc)
-        for desc in SENSOR_DESCRIPTIONS
+        Alpha2GoSensorEntity(coordinator, entry, desc) for desc in SENSOR_DESCRIPTIONS
     )
 
 
