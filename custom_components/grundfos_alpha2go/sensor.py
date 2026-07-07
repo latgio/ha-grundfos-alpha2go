@@ -1,8 +1,8 @@
 """Sensor platform for Grundfos Alpha2 Go v1.2.0"""
 
 from __future__ import annotations
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable
 
 from homeassistant.components.sensor import (
     SensorEntity,
