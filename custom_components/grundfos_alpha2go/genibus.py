@@ -39,23 +39,25 @@ class PumpData:
 class Alpha2GoClient:
     """BLE client for a Grundfos ALPHA2 GO pump."""
 
-    def __init__(self, address: str) -> None:
+    def __init__(self, address: str, ble_device) -> None:
         self._address = address
+        self._ble_device = ble_device
         self._client: BleakClient | None = None
         self._notification_count = 0
 
     async def connect(self) -> None:
         """Connect to the pump and subscribe to proprietary notifications."""
         _LOGGER.debug("Connecting to ALPHA2 GO at %s", self._address)
+
         self._client = await establish_connection(
             BleakClient,
-            self._address,
+            self._ble_device,
             self._address,
             disconnected_callback=self._on_disconnect,
             timeout=20.0,
         )
-        _LOGGER.info("Connected to ALPHA2 GO %s", self._address)
 
+        _LOGGER.info("Connected to ALPHA2 GO %s", self._address)
         try:
             await self._client.start_notify(GRUNDFOS_CHAR_UUID, self._on_notify)
             _LOGGER.debug("Notifications enabled on Grundfos characteristic")
