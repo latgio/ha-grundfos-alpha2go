@@ -56,12 +56,29 @@ class Alpha2GoClient:
             timeout=20.0,
         )
         _LOGGER.info("Connected to ALPHA2 GO %s", self._address)
+        self._log_services()
 
         try:
             await self._client.start_notify(GRUNDFOS_CHAR_UUID, self._on_notify)
             _LOGGER.debug("Notifications enabled on Grundfos characteristic")
         except Exception as exc:  # noqa: BLE001
             _LOGGER.debug("Could not enable notifications: %s", exc)
+
+    def _log_services(self) -> None:
+        """Log all discovered GATT services and characteristics."""
+        if self._client is None:
+            return
+
+        for service in self._client.services:
+            _LOGGER.warning("BLE service: %s", service.uuid)
+
+            for char in service.characteristics:
+                _LOGGER.warning(
+                    "BLE characteristic: service=%s uuid=%s properties=%s",
+                    service.uuid,
+                    char.uuid,
+                    ",".join(char.properties),
+                )
 
     async def disconnect(self) -> None:
         """Disconnect from the pump."""
