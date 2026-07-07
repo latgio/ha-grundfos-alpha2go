@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from bleak import BleakClient
 
 from .diagnostics import log_ble_packet
+from .recorder import record_ble_packet
 
 _LOGGER = logging.getLogger(__name__)
 
