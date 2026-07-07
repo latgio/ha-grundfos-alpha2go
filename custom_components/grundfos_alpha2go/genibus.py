@@ -1,5 +1,6 @@
 """BLE client for Grundfos ALPHA2 GO."""
 
+from .diagnostics import log_ble_packet
 from __future__ import annotations
 
 import asyncio
@@ -67,15 +68,14 @@ class Alpha2GoClient:
         self._client = None
 
     def _on_notify(self, _handle: int, data: bytes) -> None:
-        """Handle a BLE notification from the pump."""
-        self._notification_count += 1
-        _LOGGER.debug(
-            "BLE notify pump=%s count=%d len=%d payload=%s",
-            self._address,
-            self._notification_count,
-            len(data),
-            data.hex(),
-        )
+    """Handle notifications from the pump."""
+
+    self._notification_count += 1
+
+    log_ble_packet(
+        self._address,
+        data,
+    )
 
     @property
     def is_connected(self) -> bool:
