@@ -7,6 +7,7 @@ import logging
 from dataclasses import dataclass
 
 from bleak import BleakClient
+from bleak_retry_connector import establish_connection
 
 from .diagnostics import log_ble_packet
 from .recorder import record_ble_packet
@@ -46,11 +47,13 @@ class Alpha2GoClient:
     async def connect(self) -> None:
         """Connect to the pump and subscribe to proprietary notifications."""
         _LOGGER.debug("Connecting to ALPHA2 GO at %s", self._address)
-        self._client = BleakClient(
+        self._client = await establish_connection(
+            BleakClient,
+            self._address,
             self._address,
             disconnected_callback=self._on_disconnect,
+            timeout=20.0,
         )
-        await self._client.connect(timeout=20.0)
         _LOGGER.info("Connected to ALPHA2 GO %s", self._address)
 
         try:
