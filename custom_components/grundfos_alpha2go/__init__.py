@@ -59,6 +59,7 @@ async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
 # ── Coordinator ────────────────────────────────────────────────────────────────
 
+
 class Alpha2GoCoordinator(DataUpdateCoordinator[PumpData]):
     """Coordinator that polls the pump on a schedule."""
 

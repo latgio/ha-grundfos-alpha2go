@@ -1,6 +1,7 @@
 """Sensor platform for Grundfos Alpha2 Go v1.2.0"""
 
 from __future__ import annotations
+
 from collections.abc import Callable
 from dataclasses import dataclass, field
 
@@ -69,8 +70,7 @@ async def async_setup_entry(
 ) -> None:
     coordinator: Alpha2GoCoordinator = hass.data[DOMAIN][entry.entry_id]
     async_add_entities(
-        Alpha2GoSensorEntity(coordinator, entry, desc)
-        for desc in SENSOR_DESCRIPTIONS
+        Alpha2GoSensorEntity(coordinator, entry, desc) for desc in SENSOR_DESCRIPTIONS
     )
 
 

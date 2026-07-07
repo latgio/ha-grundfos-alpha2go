@@ -140,9 +140,8 @@ class Alpha2GoConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         service_uuids = {service.lower() for service in info.service_uuids}
         name = info.name or ""
 
-        return (
-            GRUNDFOS_SERVICE_UUID.lower() in service_uuids
-            or name.startswith(DEVICE_NAME_PREFIX)
+        return GRUNDFOS_SERVICE_UUID.lower() in service_uuids or name.startswith(
+            DEVICE_NAME_PREFIX
         )
 
     async def _create_entry(self, address: str, name: str) -> FlowResult:
